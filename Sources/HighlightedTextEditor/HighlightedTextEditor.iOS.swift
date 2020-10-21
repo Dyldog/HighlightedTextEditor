@@ -14,6 +14,7 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
     var onEditingChanged: () -> Void       = {}
     var onCommit        : () -> Void       = {}
     var onTextChange    : (String) -> Void = { _ in }
+    var onLinkClick     : (URL) -> Bool = { _ in return true }
     
     public init(
         text: Binding<String>,
@@ -68,6 +69,10 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
         
         public func textViewDidEndEditing(_ textView: UITextView) {
             parent.onCommit()
+        }
+        
+        public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+            parent.onLinkClick(URL)
         }
     }
 }
