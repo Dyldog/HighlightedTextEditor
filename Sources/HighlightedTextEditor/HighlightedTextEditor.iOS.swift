@@ -21,13 +21,15 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
         highlightRules: [HighlightRule],
         onEditingChanged: @escaping () -> Void = {},
         onCommit: @escaping () -> Void = {},
-        onTextChange: @escaping (String) -> Void = { _ in }
+        onTextChange: @escaping (String) -> Void = { _ in },
+        onLinkClick     : (URL) -> Bool = { _ in return true }
     ) {
         _text = text
         self.highlightRules = highlightRules
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
         self.onTextChange = onTextChange
+        self.onLinkClick = onLinkClick
     }
 
     public func makeCoordinator() -> Coordinator {
