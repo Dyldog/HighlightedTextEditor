@@ -14,7 +14,7 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
     var onEditingChanged: () -> Void       = {}
     var onCommit        : () -> Void       = {}
     var onTextChange    : (String) -> Void = { _ in }
-    var onLinkClick     : (URL, String) -> Bool = { _,_ in return true }
+    var onLinkClick     : (URL, String, NSRange) -> Bool = { _,_,_ in return true }
     
     public init(
         text: Binding<String>,
@@ -22,7 +22,7 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
         onEditingChanged: @escaping () -> Void = {},
         onCommit: @escaping () -> Void = {},
         onTextChange: @escaping (String) -> Void = { _ in },
-        onLinkClick     : @escaping (URL, String) -> Bool = { _,_ in return true }
+        onLinkClick     : @escaping (URL, String, NSRange) -> Bool = { _,_,_ in return true }
     ) {
         _text = text
         self.highlightRules = highlightRules
@@ -75,7 +75,7 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
         
         public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
             let text = (textView.text as NSString).substring(with: characterRange)
-            return parent.onLinkClick(URL, text)
+            return parent.onLinkClick(URL, text, characterRange)
         }
     }
 }
