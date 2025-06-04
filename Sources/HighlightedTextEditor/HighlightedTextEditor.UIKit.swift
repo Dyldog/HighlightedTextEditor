@@ -51,6 +51,7 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
     }
 
     public func updateUIView(_ uiView: UITextView, context: Context) {
+        let oldScrollEnabled = uiView.isScrollEnabled
         uiView.isScrollEnabled = false
         context.coordinator.updatingUIView = true
 
@@ -65,8 +66,8 @@ public struct HighlightedTextEditor: UIViewRepresentable, HighlightingTextEditor
             uiView.attributedText = highlightedText
         }
         updateTextViewModifiers(uiView)
+        uiView.isScrollEnabled = oldScrollEnabled
         runIntrospect(uiView)
-        uiView.isScrollEnabled = true
         uiView.selectedTextRange = context.coordinator.selectedTextRange
         context.coordinator.updatingUIView = false
     }
